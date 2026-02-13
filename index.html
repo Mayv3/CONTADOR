@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contador al 4 de marzo de 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-black text-white flex items-center justify-center p-6">
+    <main class="w-full max-w-3xl text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/80 text-sm">
+        <span class="text-lg">💸</span>
+        <span id="badge">Modo: contando billetes…</span>
+        <span class="text-lg">🤑</span>
+      </div>
+
+      <h1 class="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight">
+        Cuenta regresiva para que Nico pueda usar su guita en lo que quiera el
+        <span class="font-bold">4 de marzo de 2026</span>
+      </h1>
+
+      <p id="memeLine" class="mt-3 text-base sm:text-lg text-white/80">
+        Cargando frases turbomillonarias…
+      </p>
+
+      <p id="status" class="mt-2 text-sm sm:text-base text-white/70">
+        Cargando…
+      </p>
+
+      <section class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4" aria-label="contador regresivo">
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <div id="days" class="text-5xl sm:text-6xl font-extrabold tabular-nums">--</div>
+          <div class="mt-2 text-xs sm:text-sm uppercase tracking-widest text-white/60">Días</div>
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <div id="hours" class="text-5xl sm:text-6xl font-extrabold tabular-nums">--</div>
+          <div class="mt-2 text-xs sm:text-sm uppercase tracking-widest text-white/60">Horas</div>
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <div id="minutes" class="text-5xl sm:text-6xl font-extrabold tabular-nums">--</div>
+          <div class="mt-2 text-xs sm:text-sm uppercase tracking-widest text-white/60">Minutos</div>
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+          <div id="seconds" class="text-5xl sm:text-6xl font-extrabold tabular-nums">--</div>
+          <div class="mt-2 text-xs sm:text-sm uppercase tracking-widest text-white/60">Segundos</div>
+        </div>
+      </section>
+
+      <div class="mt-8 text-xs text-white/50">
+        Nota: usa tu hora local del navegador. (Si tu PC se atrasa, Nico también 😭💸)
+      </div>
+
+      <div class="mt-3 text-[11px] text-white/40">
+        Tip: dejalo abierto y mirá cómo se derrite la paciencia. 🫠🤑
+      </div>
+    </main>
+
+    <script>
+      // Objetivo: 4 de marzo de 2026 a las 00:00:00 (hora local del navegador)
+      const target = new Date(2026, 2, 4, 0, 0, 0); // Mes 2 = marzo (0=ene)
+
+      const elDays = document.getElementById("days");
+      const elHours = document.getElementById("hours");
+      const elMinutes = document.getElementById("minutes");
+      const elSeconds = document.getElementById("seconds");
+      const elStatus = document.getElementById("status");
+      const elMemeLine = document.getElementById("memeLine");
+      const elBadge = document.getElementById("badge");
+
+      const pad2 = (n) => String(n).padStart(2, "0");
+
+      const memeLines = [
+        "💸💸 Paciencia, Nico… la billetera está en modo ahorro extremo. 🤑",
+        "🤑 Se acerca el día de la liberación financiera. *se escuchan billetes* 💵",
+        "💰 Contando segundos como si fueran dólares… (casi). 💸",
+        "🤑 Nico mirando el contador: 'ya fue, me compro algo en mi mente'. 💭💸",
+        "💵 El contador baja y la ansiedad sube. Stonksn't. 📉🤑",
+        "🤑 El 4/3/2026: Nico desbloquea el DLC 'gastar sin culpa'. 💸",
+        "💸 Rumor: si refrescás la página, llega antes. (mentira). 🥲🤑",
+        "🤑 Lo único que corre más rápido que este contador es el hambre de compras. 💸",
+        "💵 Nico en 2026: 'dame todo lo que tenga'. 🤑",
+        "🤑 Consejo financiero: no mires el contador cada 3 segundos… (imposible). 💸"
+      ];
+
+      let lastMemeIndex = -1;
+      function pickMeme() {
+        if (memeLines.length === 1) return memeLines[0];
+        let idx = Math.floor(Math.random() * memeLines.length);
+        while (idx === lastMemeIndex) idx = Math.floor(Math.random() * memeLines.length);
+        lastMemeIndex = idx;
+        return memeLines[idx];
+      }
+
+      function setBadge(daysLeft) {
+        if (daysLeft > 200) {
+          elBadge.textContent = "Modo: ahorro monástico 🧘‍♂️💸";
+        } else if (daysLeft > 60) {
+          elBadge.textContent = "Modo: calentando la tarjeta 🔥💳";
+        } else if (daysLeft > 7) {
+          elBadge.textContent = "Modo: ansiedad premium 😵‍💫💸";
+        } else {
+          elBadge.textContent = "Modo: cuenta regresiva final 🚨🤑";
+        }
+      }
+
+      function tick() {
+        const now = new Date();
+        let diff = target - now;
+
+        if (diff <= 0) {
+          elDays.textContent = "0";
+          elHours.textContent = "00";
+          elMinutes.textContent = "00";
+          elSeconds.textContent = "00";
+          elMemeLine.textContent = "🤑💸 ¡SE DESBLOQUEÓ LA GUITA! Nico: *ruido de caja registradora* 💵💰";
+          elStatus.textContent = "¡Llegó el 4 de marzo de 2026! (ahora sí: gastá con dignidad).";
+          elBadge.textContent = "Modo: derroche responsable (ponele) 🤑";
+          document.title = "🤑💸 ¡Llegó el día!";
+          return;
+        }
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / (60 * 60 * 24));
+        const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+        const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+        const seconds = totalSeconds % 60;
+
+        elDays.textContent = String(days);
+        elHours.textContent = pad2(hours);
+        elMinutes.textContent = pad2(minutes);
+        elSeconds.textContent = pad2(seconds);
+
+        elStatus.textContent = `Faltan ${days} día(s), ${hours} hora(s), ${minutes} minuto(s) y ${seconds} segundo(s).`;
+
+        // Badge + título dinámico
+        setBadge(days);
+        document.title = `💸 ${days}d ${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)} 🤑`;
+
+        // Cambia frase meme cada 10 segundos
+        if (seconds % 10 === 0) {
+          elMemeLine.textContent = pickMeme();
+        }
+      }
+
+      // Inicial
+      elMemeLine.textContent = pickMeme();
+      tick();
+      setInterval(tick, 1000);
+    </script>
+  </body>
+</html>
